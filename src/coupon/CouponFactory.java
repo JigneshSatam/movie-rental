@@ -4,7 +4,6 @@ import pricing.PriceCaclulator;
 
 public class CouponFactory {
 
-  
   public PriceCaclulator getCoupon(CouponType type, PriceCaclulator priceCaclulator) {
     switch (type) {
     case FIFTY_PERCENT_OFF:

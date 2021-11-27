@@ -1,5 +1,5 @@
 package rentals.pricing;
 
 public interface PricingStrategy {
-	double calculatePrice(int numberOfDaysRented);
+  double calculatePrice(int numberOfDaysRented);
 }

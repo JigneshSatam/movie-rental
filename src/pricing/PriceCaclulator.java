@@ -1,5 +1,5 @@
 package pricing;
 
 public interface PriceCaclulator {
-	public double evaluateCost();
+  public double evaluateCost();
 }
