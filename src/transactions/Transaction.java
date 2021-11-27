@@ -2,15 +2,21 @@ package transactions;
 
 import java.util.ArrayList;
 
+import coupon.CouponFactory;
+import coupon.CouponType;
 import main.Customer;
 import movies.MovieType;
-import transactionFrequentRenterPoints.TransactionFrequentRenterPointsStrategy;
+import pricing.PriceCaclulator;
+import rentals.Rental;
+import rentals.RentalGroup;
 import transactionFrequentRenterPoints.DefaultTransactionFrequentRenterPointsStrategy;
 import transactionFrequentRenterPoints.MultipleMovieTypeFrequentRenterPointsStrategy;
 import transactionFrequentRenterPoints.NewReleaseMovieWithAgeRestrictionFrequentRenterPointsStrategy;
+import transactionFrequentRenterPoints.TransactionFrequentRenterPointsStrategy;
 
 public class Transaction {
 	private ArrayList<Rental> _rentals = new ArrayList<Rental>();
+	private ArrayList<CouponType> _couponTypes = new ArrayList<CouponType>();
 	private Customer _owner;
 	private TransactionFrequentRenterPointsStrategy _transactionFrequentRenterPointsStrategy;
 
@@ -22,6 +28,10 @@ public class Transaction {
 		_rentals.add(arg);
 	}
 
+	public void addCoupons(ArrayList<CouponType> coupons) {
+		_couponTypes.addAll(coupons);
+	}
+
 	public ArrayList<TransactionDetail> getDetails() {
 		ArrayList<TransactionDetail> details = new ArrayList<TransactionDetail>();
 		for (Rental rental : _rentals) {
@@ -31,11 +41,11 @@ public class Transaction {
 	}
 
 	public double calculateTotalRental() {
-		double totalRent = 0;
-		for (Rental rental : _rentals) {
-			totalRent += rental.calculateRental();
+		PriceCaclulator caclulator = new RentalGroup(_rentals);
+		for (CouponType couponType : _couponTypes) {
+			caclulator = new CouponFactory().getCoupon(couponType, caclulator);
 		}
-		return totalRent;
+		return caclulator.evaluateCost();
 	}
 
 	public int calculateTotalFrequentRenterPoints() {

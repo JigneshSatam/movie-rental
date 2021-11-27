@@ -2,13 +2,13 @@ package movies;
 
 public class Movie {
 
-    private String _title;
+	private String _title;
 
-    public Movie(String title) {
-        _title = title;
-    }
+	public Movie(String title) {
+		_title = title;
+	}
 
-    public String getTitle() {
-        return _title;
-    }
+	public String getTitle() {
+		return _title;
+	}
 }

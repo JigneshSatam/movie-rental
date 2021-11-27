@@ -1,8 +1,8 @@
-package pricing;
+package rentals.pricing;
 
 public class NewReleasePricingStrategy implements PricingStrategy {
 	@Override
-	public double calculatePrice(int numberOfDaysRented) { 
+	public double calculatePrice(int numberOfDaysRented) {
 		return numberOfDaysRented * 3;
 	}
 }

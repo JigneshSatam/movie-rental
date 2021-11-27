@@ -2,11 +2,15 @@ package main;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
+import coupon.CouponType;
 import movies.Movie;
 import movies.MovieType;
-import transactions.Rental;
+import rentals.Rental;
 
 public class CustomerTest {
 
@@ -103,8 +107,8 @@ public class CustomerTest {
 		String expected = "<name> Rads </name>\n" + "<movie>\n" + "\t\t<name> M1 </name>\n" + "\t\t<rent> 5.0 </rent>\n"
 				+ "</movie>\n" + "<movie>\n" + "\t\t<name> M2 </name>\n" + "\t\t<rent> 15.0 </rent>\n" + "</movie>\n"
 				+ "<movie>\n" + "\t\t<name> M3 </name>\n" + "\t\t<rent> 6.0 </rent>\n" + "</movie>\n" + "<movie>\n"
-				+ "\t\t<name> M4 </name>\n" + "\t\t<rent> 21.0 </rent>\n" + "</movie>\n" + "<TotalRent> 47.0 </TotalRent>\n"
-				+ "<FrequentRenterPoints> 12 </FrequentRenterPoints>\n";
+				+ "\t\t<name> M4 </name>\n" + "\t\t<rent> 21.0 </rent>\n" + "</movie>\n"
+				+ "<TotalRent> 47.0 </TotalRent>\n" + "<FrequentRenterPoints> 12 </FrequentRenterPoints>\n";
 		String actual = c.getXMLStatement();
 		assertEquals(expected, actual);
 	}
@@ -119,6 +123,41 @@ public class CustomerTest {
 		assertEquals(expected, actual);
 		c.addRental(new Rental(new Movie("M2"), 4, MovieType.NEW_RELEASE));
 		String expectedFinal = "Rental Record for Rajesh\n" + "\tM1\t12.0\n" + "\tM2\t12.0\n" + "Amount owed is 24.0\n"
+				+ "You earned 8 frequent renter points";
+		String actualFinal = c.getTextStatement();
+		assertEquals(expectedFinal, actualFinal);
+	}
+
+	@Test
+	public void shouldReduceTheRentaToHalf() {
+		Customer c = new Customer("Rajesh", 21);
+		c.addRental(new Rental(new Movie("M1"), 4, MovieType.NEW_RELEASE));
+		c.addRental(new Rental(new Movie("M2"), 4, MovieType.NEW_RELEASE));
+		String expected = "Rental Record for Rajesh\n" + "\tM1\t12.0\n" + "\tM2\t12.0\n" + "Amount owed is 24.0\n"
+				+ "You earned 8 frequent renter points";
+		String actual = c.getTextStatement();
+		assertEquals(expected, actual);
+		c.addCoupons(new ArrayList<CouponType>(
+			List.of(CouponType.FIFTY_PERCENT_OFF)
+			));
+		String expectedFinal = "Rental Record for Rajesh\n" + "\tM1\t12.0\n" + "\tM2\t12.0\n" + "Amount owed is 12.0\n"
+				+ "You earned 8 frequent renter points";
+		String actualFinal = c.getTextStatement();
+		assertEquals(expectedFinal, actualFinal);
+	}
+
+	@Test
+	public void shouldReduceTheRentaByTenDollarsIfTheTotalPriceIsMoreThanFifty() {
+		Customer c = new Customer("Rajesh", 21);
+		c.addRental(new Rental(new Movie("M1"), 24, MovieType.NEW_RELEASE));
+		c.addRental(new Rental(new Movie("M2"), 24, MovieType.NEW_RELEASE));
+		String expected = "Rental Record for Rajesh\n" + "\tM1\t72.0\n" + "\tM2\t72.0\n" + "Amount owed is 144.0\n"
+				+ "You earned 8 frequent renter points";
+		String actual = c.getTextStatement();
+		assertEquals(expected, actual);
+		c.addCoupons(new ArrayList<CouponType>(
+				List.of(CouponType.TEN_OFF_ON_FIFTY_OR_MORE_COUPON)));
+		String expectedFinal = "Rental Record for Rajesh\n" + "\tM1\t72.0\n" + "\tM2\t72.0\n" + "Amount owed is 134.0\n"
 				+ "You earned 8 frequent renter points";
 		String actualFinal = c.getTextStatement();
 		assertEquals(expectedFinal, actualFinal);

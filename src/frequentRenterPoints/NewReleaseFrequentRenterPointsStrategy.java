@@ -1,6 +1,6 @@
 package frequentRenterPoints;
 
-import transactions.Rental;
+import rentals.Rental;
 
 public class NewReleaseFrequentRenterPointsStrategy extends DefaultFrequentRenterPointsStrategy {
 	@Override

@@ -1,8 +1,8 @@
 package frequentRenterPoints;
 
-import transactions.Rental;
+import rentals.Rental;
 
-public class DefaultFrequentRenterPointsStrategy  {
+public class DefaultFrequentRenterPointsStrategy {
 	public int calculateFrequentRenterPoints(Rental rental) {
 		return 1;
 	}
