@@ -1,4 +1,4 @@
-package transactionFrequentRenterPoints;
+package transactions.frequentRenterPointsStrategies;
 
 public class DefaultTransactionFrequentRenterPointsStrategy implements TransactionFrequentRenterPointsStrategy {
 

@@ -11,10 +11,10 @@ import pricing.PriceCaclulator;
 import pricing.PriceDetail;
 import rentals.Rental;
 import rentals.RentalGroup;
-import transactionFrequentRenterPoints.DefaultTransactionFrequentRenterPointsStrategy;
-import transactionFrequentRenterPoints.MultipleMovieTypeFrequentRenterPointsStrategy;
-import transactionFrequentRenterPoints.NewReleaseMovieWithAgeRestrictionFrequentRenterPointsStrategy;
-import transactionFrequentRenterPoints.TransactionFrequentRenterPointsStrategy;
+import transactions.frequentRenterPointsStrategies.DefaultTransactionFrequentRenterPointsStrategy;
+import transactions.frequentRenterPointsStrategies.MultipleMovieTypeFrequentRenterPointsStrategy;
+import transactions.frequentRenterPointsStrategies.NewReleaseMovieWithAgeRestrictionFrequentRenterPointsStrategy;
+import transactions.frequentRenterPointsStrategies.TransactionFrequentRenterPointsStrategy;
 
 public class Transaction {
   private ArrayList<Rental> _rentals = new ArrayList<Rental>();
