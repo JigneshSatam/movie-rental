@@ -1,6 +1,6 @@
-package rentals.pricing;
+package rentals.pricingStrategies;
 
-public class ChildrenPricingStrategy implements PricingStrategy {
+public class ChildrenPricingStrategy implements RentalPricingStrategy {
   @Override
   public double calculatePrice(int numberOfDaysRented) {
     double rental = 1.5;

@@ -4,21 +4,21 @@ import frequentRenterPoints.DefaultFrequentRenterPointsStrategy;
 import frequentRenterPoints.NewReleaseFrequentRenterPointsStrategy;
 import movies.Movie;
 import movies.MovieType;
-import rentals.pricing.PricingStrategy;
-import rentals.pricing.PricingStrategyFactory;
+import rentals.pricingStrategies.RentalPricingStrategy;
+import rentals.pricingStrategies.RentalPricingStrategyFactory;
 
 public class Rental {
   private Movie _movie;
   private int _daysRented;
   private MovieType _movieType;
-  private PricingStrategy _pricingStrategy;
+  private RentalPricingStrategy _pricingStrategy;
   private DefaultFrequentRenterPointsStrategy _frequentRenterPointsStrategy;
 
   public Rental(Movie movie, int daysRented, MovieType type) {
     _movie = movie;
     _daysRented = daysRented;
     _movieType = type;
-    _pricingStrategy = PricingStrategyFactory.create(type);
+    _pricingStrategy = RentalPricingStrategyFactory.create(type);
     setFrequentRenterPointsStrategy(type);
   }
 

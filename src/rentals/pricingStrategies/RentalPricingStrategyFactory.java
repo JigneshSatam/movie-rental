@@ -1,10 +1,10 @@
-package rentals.pricing;
+package rentals.pricingStrategies;
 
 import movies.MovieType;
 
-public class PricingStrategyFactory {
+public class RentalPricingStrategyFactory {
 
-  public static PricingStrategy create(MovieType type) {
+  public static RentalPricingStrategy create(MovieType type) {
     switch (type) {
     case NEW_RELEASE:
       return new NewReleasePricingStrategy();
