@@ -3,6 +3,7 @@ package rentals;
 import java.util.ArrayList;
 
 import pricing.PriceCaclulator;
+import pricing.PriceDetail;
 
 public class RentalGroup implements PriceCaclulator {
   private ArrayList<Rental> _rentals = new ArrayList<Rental>();
@@ -20,4 +21,13 @@ public class RentalGroup implements PriceCaclulator {
     return totalRent;
   }
 
+  @Override
+  public ArrayList<pricing.PriceDetail> details() {
+    ArrayList<PriceDetail> priceDetails = new ArrayList<PriceDetail>();
+    for (Rental rental : _rentals) {
+      priceDetails.add(new pricing.PriceDetail(rental.getMovieTitle(), rental.calculateRental()));
+    }
+    System.out.println(priceDetails);
+    return priceDetails;
+  }
 }

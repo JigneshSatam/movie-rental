@@ -1,10 +1,10 @@
-package coupon;
+package coupons;
 
 import pricing.PriceCaclulator;
 
 public class CouponFactory {
 
-  public PriceCaclulator getCoupon(CouponType type, PriceCaclulator priceCaclulator) {
+  public static PriceCaclulator getCoupon(CouponType type, PriceCaclulator priceCaclulator) {
     switch (type) {
     case FIFTY_PERCENT_OFF:
       return new FiftyPercentOffCoupon(priceCaclulator);

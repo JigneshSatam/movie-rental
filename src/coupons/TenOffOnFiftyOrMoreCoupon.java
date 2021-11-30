@@ -1,6 +1,9 @@
-package coupon;
+package coupons;
+
+import java.util.ArrayList;
 
 import pricing.PriceCaclulator;
+import pricing.PriceDetail;
 
 public class TenOffOnFiftyOrMoreCoupon extends BaseCoupon {
 
@@ -18,5 +21,15 @@ public class TenOffOnFiftyOrMoreCoupon extends BaseCoupon {
       rental -= AMOUNT_OFF;
     }
     return rental;
+  }
+
+  @Override
+  public ArrayList<PriceDetail> details() {
+    ArrayList<PriceDetail> priceDetails = super.details();;
+    double rental = super.evaluateCost();
+    if (rental >= DECIDING_FACTOR) {
+      priceDetails.add(new PriceDetail("$10 off", AMOUNT_OFF * -1));
+    }
+    return priceDetails;
   }
 }

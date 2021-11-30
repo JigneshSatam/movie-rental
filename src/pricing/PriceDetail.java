@@ -1,10 +1,10 @@
-package transactions;
+package pricing;
 
-public class TransactionDetail {
+public class PriceDetail {
   private String _title;
   private double _rental;
 
-  public TransactionDetail(String movie_name, double rental) {
+  public PriceDetail(String movie_name, double rental) {
     _title = movie_name;
     _rental = rental;
   }
@@ -13,7 +13,7 @@ public class TransactionDetail {
     return _title;
   }
 
-  public double get_rental() {
+  public double get_price() {
     return _rental;
   }
 }

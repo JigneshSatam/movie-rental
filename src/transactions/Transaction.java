@@ -2,11 +2,13 @@ package transactions;
 
 import java.util.ArrayList;
 
-import coupon.CouponFactory;
-import coupon.CouponType;
+import coupons.CouponFactory;
+import coupons.CouponType;
+import discounts.FreeMovie;
 import main.Customer;
 import movies.MovieType;
 import pricing.PriceCaclulator;
+import pricing.PriceDetail;
 import rentals.Rental;
 import rentals.RentalGroup;
 import transactionFrequentRenterPoints.DefaultTransactionFrequentRenterPointsStrategy;
@@ -19,6 +21,13 @@ public class Transaction {
   private ArrayList<CouponType> _couponTypes = new ArrayList<CouponType>();
   private Customer _owner;
   private TransactionFrequentRenterPointsStrategy _transactionFrequentRenterPointsStrategy;
+  ArrayList<PriceDetail> details;
+  private boolean reinitialiseCalculator = true;
+  private boolean freeMovie = false;
+  private PriceCaclulator calculator;
+  private int MINIMUM_FREQUENT_RENTER_POINTS_FOR_FREE_MOVIE = 10;
+  private int MINIMUM_AGE_TO_AVAIL_DOUBLE_FREQUENT_RENTER_POINTS = 18;
+  private int MAXIMUM_AGE_TO_AVAIL_DOUBLE_FREQUENT_RENTER_POINTS = 22;
 
   public Transaction(Customer owner) {
     _owner = owner;
@@ -26,35 +35,33 @@ public class Transaction {
 
   public void addRental(Rental arg) {
     _rentals.add(arg);
+    reinitialiseCalculator = true;
   }
 
   public void addCoupons(ArrayList<CouponType> coupons) {
     _couponTypes.addAll(coupons);
+    reinitialiseCalculator = true;
   }
 
-  public ArrayList<TransactionDetail> getDetails() {
-    ArrayList<TransactionDetail> details = new ArrayList<TransactionDetail>();
-    for (Rental rental : _rentals) {
-      details.add(new TransactionDetail(rental.getMovieTitle(), rental.calculateRental()));
-    }
-    return details;
+  public ArrayList<PriceDetail> getDetails() {
+    return getCalculator().details();
   }
 
   public double calculateTotalRental() {
-    PriceCaclulator caclulator = new RentalGroup(_rentals);
-    for (CouponType couponType : _couponTypes) {
-      caclulator = new CouponFactory().getCoupon(couponType, caclulator);
-    }
-    return caclulator.evaluateCost();
+    return getCalculator().evaluateCost();
   }
 
   public int calculateTotalFrequentRenterPoints() {
     setTransactionFrequentRenterPointsStrategy();
-    return _transactionFrequentRenterPointsStrategy
-        .calculateTransactionFrequentRenterPoints(calculateBaseFrequentRenterPoints());
+    int totalFrequentRenterPoints = _transactionFrequentRenterPointsStrategy
+      .calculateTransactionFrequentRenterPoints(calculateBaseFrequentRenterPoints());
+    if (freeMovie) {
+      totalFrequentRenterPoints -= MINIMUM_FREQUENT_RENTER_POINTS_FOR_FREE_MOVIE;
+    }
+    return totalFrequentRenterPoints;
   }
 
-  int calculateBaseFrequentRenterPoints() {
+  private int calculateBaseFrequentRenterPoints() {
     int baseFrequentRenterPoints = 0;
     for (Rental rental : _rentals) {
       baseFrequentRenterPoints += rental.calculateFrequentRenterPoints();
@@ -68,7 +75,9 @@ public class Transaction {
       return;
     }
 
-    if (newReleasePresent() && _owner.get_age() >= 18 && _owner.get_age() <= 22) {
+    if (newReleasePresent() &&
+      _owner.get_age() >= MINIMUM_AGE_TO_AVAIL_DOUBLE_FREQUENT_RENTER_POINTS &&
+      _owner.get_age() <= MAXIMUM_AGE_TO_AVAIL_DOUBLE_FREQUENT_RENTER_POINTS) {
       _transactionFrequentRenterPointsStrategy = new NewReleaseMovieWithAgeRestrictionFrequentRenterPointsStrategy();
       return;
     }
@@ -98,5 +107,21 @@ public class Transaction {
       }
     }
     return false;
+  }
+
+  private PriceCaclulator getCalculator() {
+    if (reinitialiseCalculator) {
+      calculator = new RentalGroup(_rentals);
+      if (calculateTotalFrequentRenterPoints() > MINIMUM_FREQUENT_RENTER_POINTS_FOR_FREE_MOVIE) {
+        calculator = new FreeMovie(_rentals, calculator);
+        freeMovie = true;
+      }
+      for (CouponType couponType : _couponTypes) {
+        new CouponFactory();
+        calculator = CouponFactory.getCoupon(couponType, calculator);
+      }
+      reinitialiseCalculator = false;
+    }
+    return calculator;
   }
 }

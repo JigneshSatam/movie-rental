@@ -3,6 +3,7 @@ package rentals.pricing;
 import movies.MovieType;
 
 public class PricingStrategyFactory {
+
   public static PricingStrategy create(MovieType type) {
     switch (type) {
     case NEW_RELEASE:

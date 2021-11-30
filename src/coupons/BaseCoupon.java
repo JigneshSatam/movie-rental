@@ -1,6 +1,9 @@
-package coupon;
+package coupons;
+
+import java.util.ArrayList;
 
 import pricing.PriceCaclulator;
+import pricing.PriceDetail;
 
 public class BaseCoupon implements PriceCaclulator {
   private PriceCaclulator _priceCaclulator;
@@ -12,5 +15,10 @@ public class BaseCoupon implements PriceCaclulator {
   @Override
   public double evaluateCost() {
     return _priceCaclulator.evaluateCost();
+  }
+
+  @Override
+  public ArrayList<PriceDetail> details() {
+    return _priceCaclulator.details();
   }
 }

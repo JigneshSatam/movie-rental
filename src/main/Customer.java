@@ -2,10 +2,10 @@ package main;
 
 import java.util.ArrayList;
 
-import coupon.CouponType;
+import coupons.CouponType;
+import pricing.PriceDetail;
 import rentals.Rental;
 import transactions.Transaction;
-import transactions.TransactionDetail;
 
 public class Customer {
   private String _name;
@@ -36,9 +36,9 @@ public class Customer {
   public String getTextStatement() {
     String result = "Rental Record for " + getName() + "\n";
 
-    for (TransactionDetail detail : _transaction.getDetails()) {
+    for (PriceDetail detail : _transaction.getDetails()) {
       // show figures for the rental
-      result += "\t" + detail.get_title() + "\t" + detail.get_rental() + "\n";
+      result += "\t" + detail.get_title() + "\t" + detail.get_price() + "\n";
     }
 
     // add footer lines
@@ -50,9 +50,9 @@ public class Customer {
   public String getXMLStatement() {
     String result = "<name> " + getName() + " </name>\n";
 
-    for (TransactionDetail detail : _transaction.getDetails()) {
+    for (PriceDetail detail : _transaction.getDetails()) {
       // show figures for the rental
-      result += "<movie>\n\t\t<name> " + detail.get_title() + " </name>\n" + "\t\t<rent> " + detail.get_rental()
+      result += "<movie>\n\t\t<name> " + detail.get_title() + " </name>\n" + "\t\t<rent> " + detail.get_price()
           + " </rent>\n</movie>\n";
     }
 
