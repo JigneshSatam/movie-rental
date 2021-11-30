@@ -1,4 +1,4 @@
-package frequentRenterPoints;
+package rentals.frequentRenterPointsStrategies;
 
 import rentals.Rental;
 

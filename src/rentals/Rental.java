@@ -1,9 +1,9 @@
 package rentals;
 
-import frequentRenterPoints.DefaultFrequentRenterPointsStrategy;
-import frequentRenterPoints.NewReleaseFrequentRenterPointsStrategy;
 import movies.Movie;
 import movies.MovieType;
+import rentals.frequentRenterPointsStrategies.DefaultFrequentRenterPointsStrategy;
+import rentals.frequentRenterPointsStrategies.NewReleaseFrequentRenterPointsStrategy;
 import rentals.pricingStrategies.RentalPricingStrategy;
 import rentals.pricingStrategies.RentalPricingStrategyFactory;
 
