@@ -27,7 +27,6 @@ public class RentalGroup implements PriceCaclulator {
     for (Rental rental : _rentals) {
       priceDetails.add(new pricing.PriceDetail(rental.getMovieTitle(), rental.calculateRental()));
     }
-    System.out.println(priceDetails);
     return priceDetails;
   }
 }
