@@ -22,7 +22,7 @@ public class Rental {
     setFrequentRenterPointsStrategy(type);
   }
 
-  void setFrequentRenterPointsStrategy(MovieType type) {
+  private void setFrequentRenterPointsStrategy(MovieType type) {
     switch (type) {
     case NEW_RELEASE:
       _frequentRenterPointsStrategy = new NewReleaseFrequentRenterPointsStrategy();

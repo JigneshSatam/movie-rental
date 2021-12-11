@@ -17,14 +17,14 @@ import transactions.frequentRenterPointsStrategies.NewReleaseMovieWithAgeRestric
 import transactions.frequentRenterPointsStrategies.TransactionFrequentRenterPointsStrategy;
 
 public class Transaction {
-  private ArrayList<Rental> _rentals = new ArrayList<Rental>();
-  private ArrayList<CouponType> _couponTypes = new ArrayList<CouponType>();
   private Customer _owner;
+  private ArrayList<Rental> _rentals = new ArrayList<Rental>();
   private TransactionFrequentRenterPointsStrategy _transactionFrequentRenterPointsStrategy;
-  ArrayList<PriceDetail> details;
+  private ArrayList<CouponType> _couponTypes = new ArrayList<CouponType>();
+  private PriceCaclulator _calculator;
+
   private boolean reinitialiseCalculator = true;
   private boolean freeMovie = false;
-  private PriceCaclulator calculator;
   private int MINIMUM_FREQUENT_RENTER_POINTS_FOR_FREE_MOVIE = 10;
   private int MINIMUM_AGE_TO_AVAIL_DOUBLE_FREQUENT_RENTER_POINTS = 18;
   private int MAXIMUM_AGE_TO_AVAIL_DOUBLE_FREQUENT_RENTER_POINTS = 22;
@@ -111,17 +111,17 @@ public class Transaction {
 
   private PriceCaclulator getCalculator() {
     if (reinitialiseCalculator) {
-      calculator = new RentalGroup(_rentals);
+      _calculator = new RentalGroup(_rentals);
       if (calculateTotalFrequentRenterPoints() > MINIMUM_FREQUENT_RENTER_POINTS_FOR_FREE_MOVIE) {
-        calculator = new FreeMovie(_rentals, calculator);
+        _calculator = new FreeMovie(_rentals, _calculator);
         freeMovie = true;
       }
       for (CouponType couponType : _couponTypes) {
         new CouponFactory();
-        calculator = CouponFactory.getCoupon(couponType, calculator);
+        _calculator = CouponFactory.getCoupon(couponType, _calculator);
       }
       reinitialiseCalculator = false;
     }
-    return calculator;
+    return _calculator;
   }
 }
