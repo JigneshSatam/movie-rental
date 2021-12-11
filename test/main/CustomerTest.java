@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.Test;
 
 import coupons.CouponType;
-import movies.Movie;
-import movies.MovieType;
+import products.movies.Movie;
+import products.movies.MovieType;
 import rentals.Rental;
 
 public class CustomerTest {
@@ -91,7 +91,7 @@ public class CustomerTest {
     c.addRental(new Rental(new Movie("M4"), 7, MovieType.NEW_RELEASE));
 
     String expected = "Rental Record for Rads\n" + "\tM1\t5.0\n" + "\tM2\t15.0\n" + "\tM3\t6.0\n" + "\tM4\t21.0\n"
-        + "\tFree Movie: M4\t-21.0\n"
+        + "\tFree Movie for 10 frequent rental points: M4\t-21.0\n"
         + "Amount owed is 26.0\n" + "You earned 2 frequent renter points";
     String actual = c.getTextStatement();
     assertEquals(expected, actual);
@@ -109,7 +109,7 @@ public class CustomerTest {
         + "</movie>\n" + "<movie>\n" + "\t\t<name> M2 </name>\n" + "\t\t<rent> 15.0 </rent>\n" + "</movie>\n"
         + "<movie>\n" + "\t\t<name> M3 </name>\n" + "\t\t<rent> 6.0 </rent>\n" + "</movie>\n" + "<movie>\n"
         + "\t\t<name> M4 </name>\n" + "\t\t<rent> 21.0 </rent>\n" + "</movie>\n"
-        + "<movie>\n" + "\t\t<name> Free Movie: M4 </name>\n" + "\t\t<rent> -21.0 </rent>\n" + "</movie>\n"
+        + "<movie>\n" + "\t\t<name> Free Movie for 10 frequent rental points: M4 </name>\n" + "\t\t<rent> -21.0 </rent>\n" + "</movie>\n"
         + "<TotalRent> 26.0 </TotalRent>\n"
         + "<FrequentRenterPoints> 2 </FrequentRenterPoints>\n";
     String actual = c.getXMLStatement();

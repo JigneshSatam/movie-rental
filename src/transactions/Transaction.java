@@ -6,11 +6,10 @@ import coupons.CouponFactory;
 import coupons.CouponType;
 import discounts.FreeMovie;
 import main.Customer;
-import movies.MovieType;
 import pricing.PriceCaclulator;
 import pricing.PriceDetail;
-import rentals.Rental;
-import rentals.RentalGroup;
+import products.movies.Movie;
+import products.movies.MovieType;
 import transactions.frequentRenterPointsStrategies.DefaultTransactionFrequentRenterPointsStrategy;
 import transactions.frequentRenterPointsStrategies.MultipleMovieTypeFrequentRenterPointsStrategy;
 import transactions.frequentRenterPointsStrategies.NewReleaseMovieWithAgeRestrictionFrequentRenterPointsStrategy;
@@ -18,7 +17,7 @@ import transactions.frequentRenterPointsStrategies.TransactionFrequentRenterPoin
 
 public class Transaction {
   private Customer _owner;
-  private ArrayList<Rental> _rentals = new ArrayList<Rental>();
+  private ArrayList<TransactionalProduct> _products = new ArrayList<TransactionalProduct>();
   private TransactionFrequentRenterPointsStrategy _transactionFrequentRenterPointsStrategy;
   private ArrayList<CouponType> _couponTypes = new ArrayList<CouponType>();
   private PriceCaclulator _calculator;
@@ -33,8 +32,8 @@ public class Transaction {
     _owner = owner;
   }
 
-  public void addRental(Rental arg) {
-    _rentals.add(arg);
+  public void addProduct(TransactionalProduct products) {
+    _products.add(products);
     reinitialiseCalculator = true;
   }
 
@@ -63,8 +62,8 @@ public class Transaction {
 
   private int calculateBaseFrequentRenterPoints() {
     int baseFrequentRenterPoints = 0;
-    for (Rental rental : _rentals) {
-      baseFrequentRenterPoints += rental.calculateFrequentRenterPoints();
+    for (TransactionalProduct item : _products) {
+      baseFrequentRenterPoints += item.calculateFrequentRenterPoints();
     }
     return baseFrequentRenterPoints;
   }
@@ -86,23 +85,25 @@ public class Transaction {
   }
 
   private boolean moreThanTwoMoviesTypes() {
-    MovieType firstType = null;
-    for (Rental rental : _rentals) {
-      if (firstType == null) {
-        firstType = rental.get_movieType();
-        continue;
-      }
+    TransactionalType firstType = null;
+    for (TransactionalProduct product : _products) {
+      if (product.getItem() instanceof Movie) {
+        if (firstType == null) {
+          firstType = product.getType();
+          continue;
+        }
 
-      if (firstType != rental.get_movieType()) {
-        return true;
+        if (firstType != product.getType()) {
+          return true;
+        }
       }
     }
     return false;
   }
 
   private boolean newReleasePresent() {
-    for (Rental rental : _rentals) {
-      if (rental.get_movieType() == MovieType.NEW_RELEASE) {
+    for (TransactionalProduct product : _products) {
+      if (product.getItem() instanceof Movie && product.getType() == MovieType.NEW_RELEASE) {
         return true;
       }
     }
@@ -111,9 +112,9 @@ public class Transaction {
 
   private PriceCaclulator getCalculator() {
     if (reinitialiseCalculator) {
-      _calculator = new RentalGroup(_rentals);
+      _calculator = new TransactionGroup(_products);
       if (calculateTotalFrequentRenterPoints() > MINIMUM_FREQUENT_RENTER_POINTS_FOR_FREE_MOVIE) {
-        _calculator = new FreeMovie(_rentals, _calculator);
+        _calculator = new FreeMovie(_products, _calculator);
         freeMovie = true;
       }
       for (CouponType couponType : _couponTypes) {

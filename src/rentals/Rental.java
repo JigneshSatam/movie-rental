@@ -1,58 +1,33 @@
 package rentals;
 
-import movies.Movie;
-import movies.MovieType;
 import rentals.frequentRenterPointsStrategies.DefaultFrequentRenterPointsStrategy;
-import rentals.frequentRenterPointsStrategies.NewReleaseFrequentRenterPointsStrategy;
+import rentals.frequentRenterPointsStrategies.FrequentRenterPointsStrategyFactory;
 import rentals.pricingStrategies.RentalPricingStrategy;
 import rentals.pricingStrategies.RentalPricingStrategyFactory;
+import transactions.TransactionalProduct;
 
-public class Rental {
-  private Movie _movie;
+public class Rental extends TransactionalProduct {
   private int _daysRented;
-  private MovieType _movieType;
   private RentalPricingStrategy _pricingStrategy;
   private DefaultFrequentRenterPointsStrategy _frequentRenterPointsStrategy;
 
-  public Rental(Movie movie, int daysRented, MovieType type) {
-    _movie = movie;
+  public Rental(Rentable product, int daysRented, RentableType type) {
+    super(product, type);
     _daysRented = daysRented;
-    _movieType = type;
-    _pricingStrategy = RentalPricingStrategyFactory.create(type);
-    setFrequentRenterPointsStrategy(type);
-  }
-
-  private void setFrequentRenterPointsStrategy(MovieType type) {
-    switch (type) {
-    case NEW_RELEASE:
-      _frequentRenterPointsStrategy = new NewReleaseFrequentRenterPointsStrategy();
-      break;
-    default:
-      _frequentRenterPointsStrategy = new DefaultFrequentRenterPointsStrategy();
-    }
+    _pricingStrategy = RentalPricingStrategyFactory.create(product, type);
+    _frequentRenterPointsStrategy = FrequentRenterPointsStrategyFactory.create(product, type);
   }
 
   public int getDaysRented() {
     return _daysRented;
   }
 
-  public Movie getMovie() {
-    return _movie;
-  }
-
-  public double calculateRental() {
+  @Override
+  public double calculatePrice() {
     return _pricingStrategy.calculatePrice(getDaysRented());
   }
 
   public int calculateFrequentRenterPoints() {
     return _frequentRenterPointsStrategy.calculateFrequentRenterPoints(this);
-  }
-
-  public String getMovieTitle() {
-    return getMovie().getTitle();
-  }
-
-  public MovieType get_movieType() {
-    return _movieType;
   }
 }

@@ -1,19 +1,23 @@
 package rentals.pricingStrategies;
 
-import movies.MovieType;
+import products.movies.Movie;
+import products.movies.MovieType;
+import rentals.Rentable;
+import rentals.RentableType;
 
 public class RentalPricingStrategyFactory {
 
-  public static RentalPricingStrategy create(MovieType type) {
-    switch (type) {
-    case NEW_RELEASE:
+  public static RentalPricingStrategy create(Rentable product, RentableType type) {
+    if (product instanceof Movie && type == MovieType.NEW_RELEASE) {
       return new NewReleasePricingStrategy();
-    case REGULAR:
+    }
+    if (product instanceof Movie && type == MovieType.REGULAR) {
       return new RegularPricingStrategy();
-    case CHILDRENS:
-    default:
+    }
+    if (product instanceof Movie && type == MovieType.CHILDRENS) {
       return new ChildrenPricingStrategy();
     }
+    throw new RuntimeException("Unknow RentalType for class "+ product.getClass().getSimpleName()) ;
   }
 
 }

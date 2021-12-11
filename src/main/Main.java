@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coupons.CouponType;
-import movies.Movie;
-import movies.MovieType;
+import products.candybar.CandyBar;
+import products.movies.Movie;
+import products.movies.MovieType;
+import rentals.RentableType;
 import rentals.Rental;
+import sales.Sale;
+import sales.SellableType;
+import transactions.TransactionalType;
 
 public class Main {
 
@@ -17,6 +22,7 @@ public class Main {
     customer.addRental(new Rental(new Movie("Movie-3"), 20, MovieType.NEW_RELEASE));
     customer.addRental(new Rental(new Movie("Movie-4"), 30, MovieType.CHILDRENS));
     customer.addRental(new Rental(new Movie("Movie-5"), 10, MovieType.CHILDRENS));
+    customer.addRental(new Sale(new Movie("CandyBar-1"), TransactionalType.Types.NULL_TYPE));
     customer.addCoupons(
       new ArrayList<CouponType>(
         List.of(

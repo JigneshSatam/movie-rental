@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import coupons.CouponType;
 import pricing.PriceDetail;
-import rentals.Rental;
 import transactions.Transaction;
+import transactions.TransactionalProduct;
 
 public class Customer {
   private String _name;
@@ -21,9 +21,13 @@ public class Customer {
     return _age;
   }
 
-  public void addRental(Rental arg) {
-    _transaction.addRental(arg);
+  public void addRental(TransactionalProduct product) {
+    _transaction.addProduct(product);
   }
+
+  // public void addRentalItems(ArrayList<Rentable> items) {
+  //   _transaction.addRentableItems(items);
+  // }
 
   public void addCoupons(ArrayList<CouponType> coupons) {
     _transaction.addCoupons(coupons);
