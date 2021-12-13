@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import pricing.PriceCaclulator;
 import pricing.PriceDetail;
-import products.movies.Movie;
+import products.Movie;
 import rentals.Rental;
 import transactions.TransactionalProduct;
 
@@ -35,10 +35,10 @@ public class FreeMovie implements PriceCaclulator {
     TransactionalProduct maxRental = null;
     double maxPrice = 0.0;
     for (TransactionalProduct product : _products) {
-      if (
-        product instanceof Rental &&
-        product.getItem() instanceof Movie &&
-        maxPrice < product.calculatePrice()) {
+      if ( product instanceof Rental &&
+        (product.getItem() instanceof Movie) &&
+        maxPrice < product.calculatePrice())
+      {
         maxRental = product;
         maxPrice = maxRental.calculatePrice();
       }

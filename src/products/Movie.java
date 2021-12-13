@@ -1,6 +1,5 @@
-package products.movies;
+package products;
 
-import products.Product;
 import rentals.Rentable;
 import sales.Sellable;
 

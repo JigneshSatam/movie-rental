@@ -21,13 +21,9 @@ public class Customer {
     return _age;
   }
 
-  public void addRental(TransactionalProduct product) {
+  public void addProduct(TransactionalProduct product) {
     _transaction.addProduct(product);
   }
-
-  // public void addRentalItems(ArrayList<Rentable> items) {
-  //   _transaction.addRentableItems(items);
-  // }
 
   public void addCoupons(ArrayList<CouponType> coupons) {
     _transaction.addCoupons(coupons);

@@ -8,25 +8,30 @@ import discounts.FreeMovie;
 import main.Customer;
 import pricing.PriceCaclulator;
 import pricing.PriceDetail;
-import products.movies.Movie;
-import products.movies.MovieType;
+import rentals.RentalFactory;
+import sales.SellFactory;
 import transactions.frequentRenterPointsStrategies.DefaultTransactionFrequentRenterPointsStrategy;
 import transactions.frequentRenterPointsStrategies.MultipleMovieTypeFrequentRenterPointsStrategy;
 import transactions.frequentRenterPointsStrategies.NewReleaseMovieWithAgeRestrictionFrequentRenterPointsStrategy;
 import transactions.frequentRenterPointsStrategies.TransactionFrequentRenterPointsStrategy;
 
 public class Transaction {
-  private Customer _owner;
-  private ArrayList<TransactionalProduct> _products = new ArrayList<TransactionalProduct>();
-  private TransactionFrequentRenterPointsStrategy _transactionFrequentRenterPointsStrategy;
-  private ArrayList<CouponType> _couponTypes = new ArrayList<CouponType>();
-  private PriceCaclulator _calculator;
-
-  private boolean reinitialiseCalculator = true;
-  private boolean freeMovie = false;
   private int MINIMUM_FREQUENT_RENTER_POINTS_FOR_FREE_MOVIE = 10;
   private int MINIMUM_AGE_TO_AVAIL_DOUBLE_FREQUENT_RENTER_POINTS = 18;
   private int MAXIMUM_AGE_TO_AVAIL_DOUBLE_FREQUENT_RENTER_POINTS = 22;
+
+  private boolean _reinitialiseCalculator = true;
+  private boolean _freeMovie = false;
+
+  private Customer _owner;
+  private ArrayList<TransactionalProduct> _products =
+    new ArrayList<TransactionalProduct>();
+  private TransactionFrequentRenterPointsStrategy _transactionFrequentRenterPointsStrategy;
+  private ArrayList<CouponType> _couponTypes =
+    new ArrayList<CouponType>();
+  private PriceCaclulator _calculator;
+
+
 
   public Transaction(Customer owner) {
     _owner = owner;
@@ -34,12 +39,12 @@ public class Transaction {
 
   public void addProduct(TransactionalProduct products) {
     _products.add(products);
-    reinitialiseCalculator = true;
+    _reinitialiseCalculator = true;
   }
 
   public void addCoupons(ArrayList<CouponType> coupons) {
     _couponTypes.addAll(coupons);
-    reinitialiseCalculator = true;
+    _reinitialiseCalculator = true;
   }
 
   public ArrayList<PriceDetail> getDetails() {
@@ -52,11 +57,15 @@ public class Transaction {
 
   public int calculateTotalFrequentRenterPoints() {
     setTransactionFrequentRenterPointsStrategy();
-    int totalFrequentRenterPoints = _transactionFrequentRenterPointsStrategy
+
+    int totalFrequentRenterPoints =
+      _transactionFrequentRenterPointsStrategy
       .calculateTransactionFrequentRenterPoints(calculateBaseFrequentRenterPoints());
-    if (freeMovie) {
+
+    if (_freeMovie) {
       totalFrequentRenterPoints -= MINIMUM_FREQUENT_RENTER_POINTS_FOR_FREE_MOVIE;
     }
+
     return totalFrequentRenterPoints;
   }
 
@@ -87,15 +96,13 @@ public class Transaction {
   private boolean moreThanTwoMoviesTypes() {
     TransactionalType firstType = null;
     for (TransactionalProduct product : _products) {
-      if (product.getItem() instanceof Movie) {
-        if (firstType == null) {
-          firstType = product.getType();
-          continue;
-        }
+      if (firstType == null) {
+        firstType = product.getMovieType();
+        continue;
+      }
 
-        if (firstType != product.getType()) {
-          return true;
-        }
+      if (firstType != product.getMovieType()) {
+        return true;
       }
     }
     return false;
@@ -103,7 +110,10 @@ public class Transaction {
 
   private boolean newReleasePresent() {
     for (TransactionalProduct product : _products) {
-      if (product.getItem() instanceof Movie && product.getType() == MovieType.NEW_RELEASE) {
+      if (
+        product.getMovieType() == RentalFactory.MovieType.NEW_RELEASE ||
+        product.getMovieType() == SellFactory.MovieType.NEW_RELEASE
+      ) {
         return true;
       }
     }
@@ -111,17 +121,20 @@ public class Transaction {
   }
 
   private PriceCaclulator getCalculator() {
-    if (reinitialiseCalculator) {
+    if (_reinitialiseCalculator) {
       _calculator = new TransactionGroup(_products);
+
       if (calculateTotalFrequentRenterPoints() > MINIMUM_FREQUENT_RENTER_POINTS_FOR_FREE_MOVIE) {
         _calculator = new FreeMovie(_products, _calculator);
-        freeMovie = true;
+        _freeMovie = true;
       }
+
       for (CouponType couponType : _couponTypes) {
         new CouponFactory();
         _calculator = CouponFactory.getCoupon(couponType, _calculator);
       }
-      reinitialiseCalculator = false;
+
+      _reinitialiseCalculator = false;
     }
     return _calculator;
   }

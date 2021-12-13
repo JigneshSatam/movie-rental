@@ -6,5 +6,4 @@ public class DefaultPricingStrategy implements SalePricingStrategy {
   public double calculatePrice() {
     return 1000;
   }
-
 }

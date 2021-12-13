@@ -1,11 +1,17 @@
 package transactions;
 
+import rentals.RentalFactory;
+import sales.SellFactory;
+
 public abstract class TransactionalProduct  {
   private Transactional _item;
   private TransactionalType _type;
 
   public abstract double calculatePrice();
 
+  public enum Types implements TransactionalType {
+    NULL_TYPE
+  }
 
   public TransactionalProduct(Transactional item, TransactionalType type) {
     _item = item;
@@ -24,7 +30,17 @@ public abstract class TransactionalProduct  {
     return 0;
   }
 
-  public TransactionalType getType() {
-    return _type;
+  public TransactionalType getMovieType() {
+    for (RentalFactory.MovieType type : RentalFactory.MovieType.values()) {
+      if (type == _type) {
+        return type;
+      }
+    }
+    for (SellFactory.MovieType type : SellFactory.MovieType.values()) {
+      if (type == _type) {
+        return type;
+      }
+    }
+    return null;
   }
 }

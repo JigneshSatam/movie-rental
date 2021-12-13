@@ -6,26 +6,29 @@ import pricing.PriceCaclulator;
 import pricing.PriceDetail;
 
 public class TransactionGroup implements PriceCaclulator {
-  private ArrayList<TransactionalProduct> _items = new ArrayList<TransactionalProduct>();
+  private ArrayList<TransactionalProduct> _products =
+    new ArrayList<TransactionalProduct>();
 
-  public TransactionGroup(ArrayList<TransactionalProduct> items) {
-    _items = items;
+  public TransactionGroup(ArrayList<TransactionalProduct> products) {
+    _products = products;
   }
 
   @Override
   public double evaluateCost() {
     double totalRent = 0;
-    for (TransactionalProduct item : _items) {
-      totalRent += item.calculatePrice();
+    for (TransactionalProduct product : _products) {
+      totalRent += product.calculatePrice();
     }
     return totalRent;
   }
 
   @Override
-  public ArrayList<pricing.PriceDetail> details() {
+  public ArrayList<PriceDetail> details() {
     ArrayList<PriceDetail> priceDetails = new ArrayList<PriceDetail>();
-    for (TransactionalProduct item : _items) {
-      priceDetails.add(new pricing.PriceDetail(item.getItemTitle(), item.calculatePrice()));
+    for (TransactionalProduct product : _products) {
+      priceDetails.add(
+        new PriceDetail(product.getItemTitle(), product.calculatePrice())
+      );
     }
     return priceDetails;
   }

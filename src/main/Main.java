@@ -4,25 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coupons.CouponType;
-import products.candybar.CandyBar;
-import products.movies.Movie;
-import products.movies.MovieType;
-import rentals.RentableType;
-import rentals.Rental;
-import sales.Sale;
-import sales.SellableType;
-import transactions.TransactionalType;
+import rentals.RentalFactory;
+import rentals.RentalFactory.MovieType;
+import sales.SellFactory;
 
 public class Main {
 
   public static void main(String[] args) {
     Customer customer = new Customer("Sam", 21);
-    customer.addRental(new Rental(new Movie("Movie-1"), 10, MovieType.REGULAR));
-    customer.addRental(new Rental(new Movie("Movie-2"), 30, MovieType.NEW_RELEASE));
-    customer.addRental(new Rental(new Movie("Movie-3"), 20, MovieType.NEW_RELEASE));
-    customer.addRental(new Rental(new Movie("Movie-4"), 30, MovieType.CHILDRENS));
-    customer.addRental(new Rental(new Movie("Movie-5"), 10, MovieType.CHILDRENS));
-    customer.addRental(new Sale(new Movie("CandyBar-1"), TransactionalType.Types.NULL_TYPE));
+
+    customer.addProduct(
+      RentalFactory.createMovie("Rent-Movie-1", 10, MovieType.REGULAR)
+    );
+
+    customer.addProduct(
+      RentalFactory.createMovie("Rent-Movie-2", 30, MovieType.NEW_RELEASE)
+    );
+
+    customer.addProduct(
+      RentalFactory.createMovie("Rent-Movie-3", 20, MovieType.CHILDRENS)
+    );
+
+    customer.addProduct(
+      SellFactory.createMovie("Purchase-Movie-6", SellFactory.MovieType.NEW_RELEASE)
+    );
+
+    customer.addProduct(
+      SellFactory.createCandyBar("CandyBar-1")
+    );
+
     customer.addCoupons(
       new ArrayList<CouponType>(
         List.of(

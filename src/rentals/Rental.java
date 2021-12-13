@@ -1,21 +1,24 @@
 package rentals;
 
 import rentals.frequentRenterPointsStrategies.DefaultFrequentRenterPointsStrategy;
-import rentals.frequentRenterPointsStrategies.FrequentRenterPointsStrategyFactory;
 import rentals.pricingStrategies.RentalPricingStrategy;
-import rentals.pricingStrategies.RentalPricingStrategyFactory;
 import transactions.TransactionalProduct;
+import transactions.TransactionalType;
 
 public class Rental extends TransactionalProduct {
   private int _daysRented;
   private RentalPricingStrategy _pricingStrategy;
   private DefaultFrequentRenterPointsStrategy _frequentRenterPointsStrategy;
 
-  public Rental(Rentable product, int daysRented, RentableType type) {
+  Rental(
+    Rentable product, int daysRented,
+    TransactionalType type, RentalPricingStrategy pricingStrategy,
+    DefaultFrequentRenterPointsStrategy frequentRenterPointsStrategy
+  ) {
     super(product, type);
     _daysRented = daysRented;
-    _pricingStrategy = RentalPricingStrategyFactory.create(product, type);
-    _frequentRenterPointsStrategy = FrequentRenterPointsStrategyFactory.create(product, type);
+    _pricingStrategy = pricingStrategy;
+    _frequentRenterPointsStrategy = frequentRenterPointsStrategy;
   }
 
   public int getDaysRented() {
