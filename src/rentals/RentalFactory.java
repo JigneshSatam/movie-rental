@@ -1,6 +1,7 @@
 package rentals;
 
 import products.Movie;
+import rentals.discountingStrategies.MovieDiscountingStrategy;
 import rentals.frequentRenterPointsStrategies.DefaultFrequentRenterPointsStrategy;
 import rentals.frequentRenterPointsStrategies.NewReleaseFrequentRenterPointsStrategy;
 import rentals.pricingStrategies.ChildrenPricingStrategy;
@@ -13,26 +14,29 @@ public class RentalFactory {
     NEW_RELEASE, REGULAR, CHILDRENS;
   }
 
-  public static Rental createMovie(String title, int daysRented, MovieType type) {
+  public static Rental createMovieRental(Movie movie, int daysRented, MovieType type) {
     switch (type) {
     case NEW_RELEASE:
       return new Rental(
-        new Movie(title), daysRented, type,
+        movie, daysRented, type,
         new NewReleasePricingStrategy(),
-        new NewReleaseFrequentRenterPointsStrategy()
+        new NewReleaseFrequentRenterPointsStrategy(),
+        new MovieDiscountingStrategy()
       );
     case REGULAR:
       return new Rental(
-        new Movie(title), daysRented, type,
+        movie, daysRented, type,
         new RegularPricingStrategy(),
-        new DefaultFrequentRenterPointsStrategy()
+        new DefaultFrequentRenterPointsStrategy(),
+        new MovieDiscountingStrategy()
       );
     case CHILDRENS:
     default:
       return new Rental(
-        new Movie(title), daysRented, type,
+        movie, daysRented, type,
         new ChildrenPricingStrategy(),
-        new DefaultFrequentRenterPointsStrategy()
+        new DefaultFrequentRenterPointsStrategy(),
+        new MovieDiscountingStrategy()
       );
     }
   }

@@ -1,16 +1,12 @@
 package main;
 
-import java.util.ArrayList;
-
-import coupons.CouponType;
 import pricing.PriceDetail;
 import transactions.Transaction;
-import transactions.TransactionalProduct;
 
 public class Customer {
   private String _name;
   private int _age;
-  private Transaction _transaction = new Transaction(this);
+  private Transaction _transaction = new Transaction(this);;
 
   public Customer(String name, int age) {
     _name = name;
@@ -21,12 +17,8 @@ public class Customer {
     return _age;
   }
 
-  public void addProduct(TransactionalProduct product) {
-    _transaction.addProduct(product);
-  }
-
-  public void addCoupons(ArrayList<CouponType> coupons) {
-    _transaction.addCoupons(coupons);
+  public Transaction createTransaction() {
+    return _transaction;
   }
 
   public String getName() {
@@ -38,6 +30,7 @@ public class Customer {
 
     for (PriceDetail detail : _transaction.getDetails()) {
       // show figures for the rental
+      // result += String.format("%-30s %.2f\n", detail.get_title(), detail.get_price());
       result += "\t" + detail.get_title() + "\t" + detail.get_price() + "\n";
     }
 

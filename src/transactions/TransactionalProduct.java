@@ -8,6 +8,9 @@ public abstract class TransactionalProduct  {
   private TransactionalType _type;
 
   public abstract double calculatePrice();
+  public abstract double calculateDiscount();
+  public abstract int calculateFrequentRenterPoints();
+
 
   public enum Types implements TransactionalType {
     NULL_TYPE
@@ -24,10 +27,6 @@ public abstract class TransactionalProduct  {
 
   public String getItemTitle() {
     return getItem().getTitle();
-  }
-
-  public int calculateFrequentRenterPoints() {
-    return 0;
   }
 
   public TransactionalType getMovieType() {

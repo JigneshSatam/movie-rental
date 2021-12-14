@@ -2,7 +2,10 @@ package sales;
 
 import products.CandyBar;
 import products.Movie;
-import sales.pricingStrategies.DefaultPricingStrategy;
+import sales.discountingStrategies.DefaultDiscountingStrategy;
+import sales.frequentRenterPointsStrategies.DefaultFrequentRenterPointsStrategy;
+import sales.pricingStrategies.CandyBarPricingStrategy;
+import sales.pricingStrategies.MoviePricingStrategy;
 import transactions.TransactionalProduct;
 import transactions.TransactionalType;
 
@@ -11,16 +14,20 @@ public class SellFactory {
     NEW_RELEASE, REGULAR, CHILDRENS;
   }
 
-  public static Sell createMovie(String title, MovieType type) {
+  public static Sell createMovieSell(Movie movie, MovieType type) {
     return new Sell(
-      new Movie(title), type,
-      new DefaultPricingStrategy()
+      movie, type, new MoviePricingStrategy(),
+      new DefaultDiscountingStrategy(),
+      new DefaultFrequentRenterPointsStrategy()
     );
   }
 
-  public static Sell createCandyBar(String title) {
+  public static Sell createCandyBarSell(CandyBar candyBar) {
     return new Sell(
-      new CandyBar(title), TransactionalProduct.Types.NULL_TYPE,
-      new DefaultPricingStrategy());
+      candyBar, TransactionalProduct.Types.NULL_TYPE,
+      new CandyBarPricingStrategy(),
+      new DefaultDiscountingStrategy(),
+      new DefaultFrequentRenterPointsStrategy()
+    );
   }
 }

@@ -4,36 +4,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coupons.CouponType;
+import products.CandyBar;
+import products.Movie;
 import rentals.RentalFactory;
 import rentals.RentalFactory.MovieType;
 import sales.SellFactory;
+import transactions.Transaction;
 
 public class Main {
 
   public static void main(String[] args) {
     Customer customer = new Customer("Sam", 21);
+    Transaction transaction = customer.createTransaction();
 
-    customer.addProduct(
-      RentalFactory.createMovie("Rent-Movie-1", 10, MovieType.REGULAR)
+    transaction.addProduct(
+      RentalFactory.createMovieRental(
+        new Movie("Rent-Movie-1"), 10, MovieType.REGULAR
+      )
     );
 
-    customer.addProduct(
-      RentalFactory.createMovie("Rent-Movie-2", 30, MovieType.NEW_RELEASE)
+    transaction.addProduct(
+      SellFactory.createMovieSell(
+        new Movie("Purchase-Movie-1"), SellFactory.MovieType.NEW_RELEASE
+      )
     );
 
-    customer.addProduct(
-      RentalFactory.createMovie("Rent-Movie-3", 20, MovieType.CHILDRENS)
+    transaction.addProduct(
+      RentalFactory.createMovieRental(
+        new Movie("Rent-Movie-2"), 30, MovieType.NEW_RELEASE
+      )
     );
 
-    customer.addProduct(
-      SellFactory.createMovie("Purchase-Movie-6", SellFactory.MovieType.NEW_RELEASE)
+    transaction.addProduct(
+      RentalFactory.createMovieRental(
+        new Movie("Rent-Movie-3"), 20, MovieType.CHILDRENS
+      )
     );
 
-    customer.addProduct(
-      SellFactory.createCandyBar("CandyBar-1")
+    transaction.addProduct(
+      RentalFactory.createMovieRental(
+        new Movie("Rent-Movie-4"), 20, MovieType.CHILDRENS
+      )
     );
 
-    customer.addCoupons(
+    transaction.addProduct(
+      RentalFactory.createMovieRental(
+        new Movie("Rent-Movie-5"), 20, MovieType.NEW_RELEASE
+      )
+    );
+
+    transaction.addProduct(
+      SellFactory.createCandyBarSell(new CandyBar("CandyBar-1"))
+    );
+
+    transaction.addCoupons(
       new ArrayList<CouponType>(
         List.of(
           CouponType.FIFTY_PERCENT_OFF,

@@ -1,9 +1,9 @@
 package sales.pricingStrategies;
 
-public class DefaultPricingStrategy implements SalePricingStrategy {
+public class MoviePricingStrategy implements SalePricingStrategy {
 
   @Override
   public double calculatePrice() {
-    return 1000;
+    return 10;
   }
 }

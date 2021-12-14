@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import pricing.PriceCaclulator;
 import pricing.PriceDetail;
-import products.Movie;
-import rentals.Rental;
 import transactions.TransactionalProduct;
 
 public class FreeMovie implements PriceCaclulator {
@@ -19,7 +17,7 @@ public class FreeMovie implements PriceCaclulator {
 
   @Override
   public double evaluateCost() {
-    return _calculator.evaluateCost() - getMaxRentalMovie().calculatePrice();
+    return _calculator.evaluateCost() - getMaxRentalMovie().calculateDiscount();
   }
 
   @Override
@@ -27,20 +25,17 @@ public class FreeMovie implements PriceCaclulator {
     ArrayList<PriceDetail> priceDetails = _calculator.details();
     TransactionalProduct maxRental = getMaxRentalMovie();
     priceDetails.add(new PriceDetail("Free Movie for 10 frequent rental points: " + maxRental.getItemTitle(),
-        maxRental.calculatePrice() * -1));
+        maxRental.calculateDiscount() * -1));
     return priceDetails;
   }
 
   private TransactionalProduct getMaxRentalMovie() {
     TransactionalProduct maxRental = null;
-    double maxPrice = 0.0;
+    double maxDiscount = 0.0;
     for (TransactionalProduct product : _products) {
-      if ( product instanceof Rental &&
-        (product.getItem() instanceof Movie) &&
-        maxPrice < product.calculatePrice())
-      {
+      if (maxDiscount < product.calculateDiscount()) {
         maxRental = product;
-        maxPrice = maxRental.calculatePrice();
+        maxDiscount = maxRental.calculateDiscount();
       }
     }
     return maxRental;
