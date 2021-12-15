@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coupons.CouponType;
-import products.CandyBar;
+import products.Book;
+import products.Candy;
 import products.Movie;
+import products.MusicCD;
+import products.PS4;
+import products.VideoGame;
+import products.Xbox;
+import rentals.Rental;
 import rentals.RentalFactory;
-import rentals.RentalFactory.MovieType;
-import sales.SellFactory;
+import sells.Sell;
+import sells.SellFactory;
 import transactions.Transaction;
 
 public class Main {
@@ -19,42 +25,43 @@ public class Main {
 
     transaction.addProduct(
       RentalFactory.createMovieRental(
-        new Movie("Rent-Movie-1"), 10, MovieType.REGULAR
+        new Movie("Star Wars"), 5, Rental.MovieType.REGULAR
       )
     );
 
     transaction.addProduct(
       SellFactory.createMovieSell(
-        new Movie("Purchase-Movie-1"), SellFactory.MovieType.NEW_RELEASE
+        new Movie("The Matrix"), Sell.MovieType.NEW_RELEASE
       )
     );
 
     transaction.addProduct(
-      RentalFactory.createMovieRental(
-        new Movie("Rent-Movie-2"), 30, MovieType.NEW_RELEASE
-      )
+      RentalFactory.createBookRental(
+        new Book("Catch-22"), 30)
     );
 
     transaction.addProduct(
-      RentalFactory.createMovieRental(
-        new Movie("Rent-Movie-3"), 20, MovieType.CHILDRENS
-      )
+      RentalFactory.createMusicCDRental(new MusicCD("Freedom"), 20)
     );
 
     transaction.addProduct(
-      RentalFactory.createMovieRental(
-        new Movie("Rent-Movie-4"), 20, MovieType.CHILDRENS
-      )
+      SellFactory.createMusicCDSell(new MusicCD("Everyday Life"))
     );
 
     transaction.addProduct(
-      RentalFactory.createMovieRental(
-        new Movie("Rent-Movie-5"), 20, MovieType.NEW_RELEASE
-      )
+      SellFactory.createPS4Sell(new PS4("Call of Duty"))
     );
 
     transaction.addProduct(
-      SellFactory.createCandyBarSell(new CandyBar("CandyBar-1"))
+      SellFactory.createVideoGameSell(new VideoGame("Counter Strike"))
+    );
+
+    transaction.addProduct(
+      SellFactory.createXboxSell(new Xbox("FIFA 21"))
+    );
+
+    transaction.addProduct(
+      SellFactory.createCandySell(new Candy("Hershey's"))
     );
 
     transaction.addCoupons(
@@ -67,13 +74,12 @@ public class Main {
     );
 
     System.out.println();
-    System.out.println("====Text Output====");
-    System.out.println(customer.getTextStatement());
+    System.out.println(customer.getFormattedTextStatement());
+    System.out.println();
 
     // System.out.println();
     // System.out.println("====XML Output====");
     // System.out.println(customer.getXMLStatement());
 
   }
-
 }

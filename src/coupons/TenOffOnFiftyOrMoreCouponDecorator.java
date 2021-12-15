@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import pricing.PriceCaclulator;
 import pricing.PriceDetail;
 
-public class TenOffOnFiftyOrMoreCoupon extends BaseCoupon {
+public class TenOffOnFiftyOrMoreCouponDecorator extends BaseCouponDecorator {
 
   double DECIDING_FACTOR = 50.0;
   double AMOUNT_OFF = 10.0;
 
-  public TenOffOnFiftyOrMoreCoupon(PriceCaclulator coupon) {
+  public TenOffOnFiftyOrMoreCouponDecorator(PriceCaclulator coupon) {
     super(coupon);
   }
 

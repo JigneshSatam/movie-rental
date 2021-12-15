@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import pricing.PriceCaclulator;
 import pricing.PriceDetail;
 
-public class BaseCoupon implements PriceCaclulator {
+public class BaseCouponDecorator implements PriceCaclulator {
   private PriceCaclulator _priceCaclulator;
 
-  public BaseCoupon(PriceCaclulator priceCaclulator) {
+  public BaseCouponDecorator(PriceCaclulator priceCaclulator) {
     this._priceCaclulator = priceCaclulator;
   }
 

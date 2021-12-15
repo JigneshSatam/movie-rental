@@ -1,21 +1,24 @@
-package sales;
+package sells;
 
-import sales.discountingStrategies.DefaultDiscountingStrategy;
-import sales.frequentRenterPointsStrategies.DefaultFrequentRenterPointsStrategy;
-import sales.pricingStrategies.SalePricingStrategy;
+import sells.discountingStrategies.DefaultDiscountingStrategy;
+import sells.frequentRenterPointsStrategies.DefaultFrequentRenterPointsStrategy;
+import sells.pricingStrategies.SellPricingStrategy;
 import transactions.TransactionalProduct;
 import transactions.TransactionalType;
 
 public class Sell extends TransactionalProduct {
-  private SalePricingStrategy _pricingStrategy;
+  private SellPricingStrategy _pricingStrategy;
   private DefaultDiscountingStrategy _discountingStrategy;
   private DefaultFrequentRenterPointsStrategy
     _frequentRenterPointsStrategy;
 
+  public enum MovieType implements TransactionalType {
+    NEW_RELEASE, REGULAR, CHILDRENS;
+  }
 
   public Sell(
     Sellable product, TransactionalType type,
-    SalePricingStrategy pricingStrategy,
+    SellPricingStrategy pricingStrategy,
     DefaultDiscountingStrategy discountingStrategy,
     DefaultFrequentRenterPointsStrategy frequentRenterPointsStrategy
   ) {

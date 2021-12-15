@@ -12,6 +12,10 @@ public class Rental extends TransactionalProduct {
   private DefaultFrequentRenterPointsStrategy _frequentRenterPointsStrategy;
   private DefaultDiscountingStrategy _discountingStrategy;
 
+  public enum MovieType implements TransactionalType {
+    NEW_RELEASE, REGULAR, CHILDRENS;
+  }
+
   Rental(
     Rentable product, int daysRented,
     TransactionalType type, RentalPricingStrategy pricingStrategy,

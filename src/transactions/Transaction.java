@@ -8,8 +8,8 @@ import discounts.FreeMovie;
 import main.Customer;
 import pricing.PriceCaclulator;
 import pricing.PriceDetail;
-import rentals.RentalFactory;
-import sales.SellFactory;
+import rentals.Rental;
+import sells.Sell;
 import transactions.frequentRenterPointsStrategies.DefaultTransactionFrequentRenterPointsStrategy;
 import transactions.frequentRenterPointsStrategies.MultipleMovieTypeFrequentRenterPointsStrategy;
 import transactions.frequentRenterPointsStrategies.NewReleaseMovieWithAgeRestrictionFrequentRenterPointsStrategy;
@@ -129,8 +129,8 @@ public class Transaction {
   private boolean newReleasePresent() {
     for (TransactionalProduct product : _products) {
       if (
-        product.getMovieType() == RentalFactory.MovieType.NEW_RELEASE ||
-        product.getMovieType() == SellFactory.MovieType.NEW_RELEASE
+        product.getMovieType() == Rental.MovieType.NEW_RELEASE ||
+        product.getMovieType() == Sell.MovieType.NEW_RELEASE
       ) {
         return true;
       }

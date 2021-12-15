@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import pricing.PriceCaclulator;
 import pricing.PriceDetail;
 
-public class FiftyPercentOffCoupon extends BaseCoupon {
+public class FiftyPercentOffCouponDecorator extends BaseCouponDecorator {
 
   double FIFTY_PERCENT = 50 / 100.0;
 
-  public FiftyPercentOffCoupon(PriceCaclulator coupon) {
+  public FiftyPercentOffCouponDecorator(PriceCaclulator coupon) {
     super(coupon);
   }
 

@@ -26,11 +26,10 @@ public class Customer {
   }
 
   public String getTextStatement() {
-    String result = "Rental Record for " + getName() + "\n";
+    String result = "Transaction Details for " + getName() + "\n";
 
     for (PriceDetail detail : _transaction.getDetails()) {
       // show figures for the rental
-      // result += String.format("%-30s %.2f\n", detail.get_title(), detail.get_price());
       result += "\t" + detail.get_title() + "\t" + detail.get_price() + "\n";
     }
 
@@ -52,6 +51,27 @@ public class Customer {
     // add footer lines
     result += "<TotalRent> " + _transaction.calculateTotalRental() + " </TotalRent>\n" + "<FrequentRenterPoints> "
         + _transaction.calculateTotalFrequentRenterPoints() + " </FrequentRenterPoints>\n";
+    return result;
+  }
+
+  public String getFormattedTextStatement() {
+    final String Reset = "\033[0m";
+    final String Blue = "\033[1;36m";
+    final String Green = "\033[1;32m";
+    final String Yellow = "\033[1;33m";
+    final String CyanBoldBright = "\033[44m";
+
+    String result = Yellow + "Transaction Details for: " + getName() + Reset + "\n";
+    result += String.format("%s%-20s %s%s%s\n", CyanBoldBright, "Item", CyanBoldBright, "Price", Reset);
+
+    for (PriceDetail detail : _transaction.getDetails()) {
+      // show figures for the rental
+      result += String.format("%s%-20s %s%.2f%s\n", Blue, detail.get_title(), Green, detail.get_price(), Reset);
+    }
+
+    // add footer lines
+    result += Yellow + "Amount owed is " + _transaction.calculateTotalRental() + Reset + "\n";
+    result += Green + "You earned " + _transaction.calculateTotalFrequentRenterPoints() + " frequent renter points" + Reset;
     return result;
   }
 }

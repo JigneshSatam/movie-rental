@@ -1,4 +1,4 @@
-package sales;
+package sells;
 
 import transactions.Transactional;
 
