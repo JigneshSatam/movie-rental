@@ -6,11 +6,11 @@ import pricing.PriceCaclulator;
 import pricing.PriceDetail;
 import transactions.TransactionalProduct;
 
-public class FreeMovie implements PriceCaclulator {
+public class FreeMovieDiscount implements PriceCaclulator {
   private ArrayList<TransactionalProduct> _products;
   private PriceCaclulator _calculator;
 
-  public FreeMovie(ArrayList<TransactionalProduct> products, PriceCaclulator calculator) {
+  public FreeMovieDiscount(ArrayList<TransactionalProduct> products, PriceCaclulator calculator) {
     _products = products;
     _calculator = calculator;
   }

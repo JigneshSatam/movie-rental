@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import coupons.CouponFactory;
 import coupons.CouponType;
-import discounts.FreeMovie;
+import discounts.FreeMovieDiscount;
 import main.Customer;
 import pricing.PriceCaclulator;
 import pricing.PriceDetail;
@@ -59,7 +59,7 @@ public class Transaction {
       _calculator = new TransactionGroup(_products);
 
       if (calculateTotalFrequentRenterPoints() > MINIMUM_FREQUENT_RENTER_POINTS_FOR_FREE_MOVIE) {
-        _calculator = new FreeMovie(_products, _calculator);
+        _calculator = new FreeMovieDiscount(_products, _calculator);
         _freeMovie = true;
       }
 
