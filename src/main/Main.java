@@ -25,13 +25,15 @@ public class Main {
 
     transaction.addProduct(
       RentalFactory.createMovieRental(
-        new Movie("Star Wars"), 5, Rental.MovieType.REGULAR
+        new Movie("Star Wars"), 3, Rental.MovieType.NEW_RELEASE
       )
     );
 
+    transaction.addProduct(RentalFactory.createMovieRental(new Movie("Star Wars-2"), 5, Rental.MovieType.NEW_RELEASE));
+
     transaction.addProduct(
       SellFactory.createMovieSell(
-        new Movie("The Matrix"), Sell.MovieType.NEW_RELEASE
+        new Movie("The Matrix"), Sell.MovieType.REGULAR
       )
     );
 
